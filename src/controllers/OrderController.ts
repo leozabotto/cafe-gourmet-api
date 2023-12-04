@@ -12,12 +12,18 @@ import FindAllOrderService from '../services/Order/FindAllOrderService';
 
 export default class OrderController {
   async create(req: Request, res: Response) {
-    const { addressId, customerId, items, total }: IRequestCreateOrder =
-      req.body;
+    const {
+      addressId,
+      customerId,
+      items,
+      total,
+      paymentForm,
+    }: IRequestCreateOrder = req.body;
 
     const createOrderService = new CreateOrderService();
     const createdOrder = await createOrderService.execute({
       addressId,
+      paymentForm,
       customerId,
       items,
       total,

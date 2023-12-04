@@ -5,6 +5,7 @@ export interface Order {
   date?: Date;
   total?: Prisma.Decimal;
   status?: string;
+  paymentForm?: string;
   OrderItems?: OrderItem[];
 }
 
@@ -17,6 +18,7 @@ export type OrderItem = {
 
 export interface IRequestCreateOrder {
   date?: Date;
+  paymentForm: string;
   total: Prisma.Decimal;
   items: OrderItem[];
   addressId: number;

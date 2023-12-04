@@ -62,11 +62,20 @@ export default class CreateOrderService implements ICreateOrderService {
     date,
     items,
     total,
+    paymentForm,
   }: IRequestCreateOrder) {
-    await this.validate({ addressId, customerId, date, items, total });
+    await this.validate({
+      addressId,
+      customerId,
+      date,
+      items,
+      total,
+      paymentForm,
+    });
     const Order = await this.OrderRepository.create({
       addressId,
       customerId,
+      paymentForm,
       date,
       items,
       total: new Prisma.Decimal(total),
