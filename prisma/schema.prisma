@@ -16,6 +16,22 @@ model Customer {
   password String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Adresses Address[]
+}
+
+model Address {
+  id    Int    @id @default(autoincrement())
+  street  String
+  number String
+  zipcode String
+  neighborhood String
+  state String
+  city String
+  complement String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId Int
 }
 
 model Admin {

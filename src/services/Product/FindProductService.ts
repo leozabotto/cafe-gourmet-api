@@ -42,7 +42,7 @@ export default class FindProductService implements IFindProductService {
     if (!foundProduct)
       throw new Exception({
         status: 'error',
-        message: 'user not found',
+        message: 'product not found',
         code: 404,
       });
 
