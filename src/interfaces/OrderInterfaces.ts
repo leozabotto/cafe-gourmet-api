@@ -5,7 +5,7 @@ export interface Order {
   date?: Date;
   total?: Prisma.Decimal;
   status?: string;
-  paymentForm?: string;
+  paymentForm?: string | null;
   OrderItems?: OrderItem[];
 }
 
