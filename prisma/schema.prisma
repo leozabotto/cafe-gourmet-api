@@ -8,48 +8,78 @@ datasource db {
 }
 
 model Customer {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-  phoneNumber String @unique
-  cpf String @unique
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Adresses Address[]
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String    @unique
+  phoneNumber String    @unique
+  cpf         String    @unique
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Addresses   Address[]
+  Order       Order[]
 }
 
 model Address {
-  id    Int    @id @default(autoincrement())
-  street  String
-  number String
-  zipcode String
+  id           Int      @id @default(autoincrement())
+  street       String
+  number       String
+  zipcode      String
   neighborhood String
-  state String
-  city String
-  complement String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId Int
+  state        String
+  city         String
+  complement   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  customer     Customer @relation(fields: [customerId], references: [id])
+  customerId   Int
+  Orders       Order[]
 }
 
 model Admin {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
-  password String
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Product {
-  id    Int    @id @default(autoincrement())
-  name  String
-  price Decimal @db.Decimal(10,2)
-  image String
+  id          Int          @id @default(autoincrement())
+  name        String
+  price       Decimal      @db.Decimal(10, 2)
+  image       String
   description String
-  active Boolean @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  active      Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  OrderItems  OrderItems[]
+}
+
+model Order {
+  id         Int          @id @default(autoincrement())
+  date       DateTime     @default(now())
+  total      Decimal      @db.Decimal(10, 2)
+  status     String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  customer   Customer     @relation(fields: [customerId], references: [id])
+  customerId Int
+  address    Address      @relation(fields: [addressId], references: [id])
+  addressId  Int
+  OrderItems OrderItems[]
+}
+
+model OrderItems {
+  id          Int      @id @default(autoincrement())
+  quantity    Int
+  price       Decimal  @db.Decimal(10, 2)
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  product     Product  @relation(fields: [productId], references: [id])
+  productId   Int
+  order       Order    @relation(fields: [orderId], references: [id])
+  orderId     Int
 }

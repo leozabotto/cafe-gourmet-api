@@ -12,14 +12,14 @@ import FindAllProductService from '../services/Product/FindAllProductService';
 
 export default class ProductController {
   async create(req: Request, res: Response) {
-    const { name, description, price }: IRequestCreateProduct = req.body;
+    const { name, description, price, image }: IRequestCreateProduct = req.body;
 
     const createProductService = new CreateProductService();
     const createdProduct = await createProductService.execute({
       name,
       description,
       price,
-      image: 'A',
+      image,
     });
 
     res.json(createdProduct);
