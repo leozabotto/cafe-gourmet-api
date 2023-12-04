@@ -42,6 +42,7 @@ export default class OrderRepository {
         total: params.total,
         addressId: params.addressId,
         customerId: params.customerId,
+        paymentForm: params.paymentForm,
         date: params.date,
         OrderItems: {
           create: params.items.map((item) => ({
