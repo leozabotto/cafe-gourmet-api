@@ -16,6 +16,14 @@ export interface IRequestCreateProduct {
   description: string;
 }
 
+export interface IRequestUpdateProduct {
+  id: number;
+  name: string;
+  price: Prisma.Decimal;
+  active: boolean;
+  description: string;
+}
+
 export interface IRequestFindProduct {
   id?: number;
 }

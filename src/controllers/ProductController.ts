@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import {
   IRequestCreateProduct,
+  IRequestUpdateProduct,
   IRequestFindProduct,
 } from '../interfaces/ProductInterfaces';
 
 import CreateProductService from '../services/Product/CreateProductService';
+import UpdateProductService from '../services/Product/UpdateProductService';
 import FindProductService from '../services/Product/FindProductService';
 import FindAllProductService from '../services/Product/FindAllProductService';
 
@@ -21,6 +23,24 @@ export default class ProductController {
     });
 
     res.json(createdProduct);
+  }
+
+  async update(req: Request, res: Response) {
+    const { name, description, price, active }: IRequestUpdateProduct =
+      req.body;
+
+    const { id } = req.params;
+
+    const updateProductService = new UpdateProductService();
+    const updatedProduct = await updateProductService.execute({
+      id: +id,
+      name,
+      description,
+      price,
+      active,
+    });
+
+    res.json(updatedProduct);
   }
 
   async find(req: Request, res: Response) {

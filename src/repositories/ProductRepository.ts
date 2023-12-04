@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import {
   IRequestCreateProduct,
+  IRequestUpdateProduct,
   Product,
 } from '../interfaces/ProductInterfaces';
 
@@ -25,6 +26,19 @@ export default class ProductRepository {
 
   async create(params: IRequestCreateProduct): Promise<Product> {
     const product = await prisma.product.create({
+      data: {
+        ...params,
+      },
+    });
+
+    return product;
+  }
+
+  async update(params: IRequestUpdateProduct): Promise<Product> {
+    const product = await prisma.product.update({
+      where: {
+        id: params.id,
+      },
       data: {
         ...params,
       },
