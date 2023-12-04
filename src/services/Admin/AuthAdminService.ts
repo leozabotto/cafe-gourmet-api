@@ -3,17 +3,14 @@ import Exception from '../../errors/Exception';
 import { compareHash } from '../../utils/hash';
 import generateToken from '../../utils/jwt';
 
-import CustomerRepository from '../../repositories/CustomerRepository';
+import AdminRepository from '../../repositories/AdminRepository';
 
-import {
-  IRequestAuthCustomer,
-  Customer,
-} from '../../interfaces/CustomerInterfaces';
+import { IRequestAuthAdmin, Admin } from '../../interfaces/AdminInterfaces';
 
 interface IAuthAdminService {
-  CustomerRepository: CustomerRepository;
-  validate: (params: IRequestAuthCustomer) => boolean;
-  execute: (params: IRequestAuthCustomer) => Promise<string>;
+  AdminRepository: AdminRepository;
+  validate: (params: IRequestAuthAdmin) => boolean;
+  execute: (params: IRequestAuthAdmin) => Promise<string>;
 }
 
 const defaultAuthException = new Exception({
@@ -22,14 +19,14 @@ const defaultAuthException = new Exception({
   code: 102,
 });
 
-export default class AuthCustomervice implements IAuthAdminService {
-  public CustomerRepository;
+export default class AuthAdminvice implements IAuthAdminService {
+  public AdminRepository;
 
   constructor() {
-    this.CustomerRepository = new CustomerRepository();
+    this.AdminRepository = new AdminRepository();
   }
 
-  validate({ email, password }: IRequestAuthCustomer) {
+  validate({ email, password }: IRequestAuthAdmin) {
     switch (true) {
       case !email:
         throw new Exception({
@@ -49,31 +46,33 @@ export default class AuthCustomervice implements IAuthAdminService {
     }
   }
 
-  async execute({ email, password }: IRequestAuthCustomer) {
+  async execute({ email, password }: IRequestAuthAdmin) {
     this.validate({ email, password });
 
-    let foundCustomer: null | Customer = null;
+    let foundAdmin: null | Admin = null;
 
-    const CustomerParamType = 'email';
+    const AdminParamType = 'email';
 
-    if (CustomerParamType === 'email') {
-      foundCustomer = await this.CustomerRepository.findByEmail(email);
+    if (AdminParamType === 'email') {
+      foundAdmin = await this.AdminRepository.findByEmail(email);
     }
 
-    if (!foundCustomer) throw defaultAuthException;
+    console.log(email);
+    console.log(foundAdmin);
+
+    if (!foundAdmin) throw defaultAuthException;
 
     const isPasswordValid = compareHash(
       password,
-      foundCustomer.password as string,
+      foundAdmin.password as string,
     );
 
     if (!isPasswordValid) throw defaultAuthException;
 
     const token = generateToken({
-      id: foundCustomer.id,
-      name: foundCustomer.name,
-      email: foundCustomer.email,
-      phoneNumber: foundCustomer.phoneNumber,
+      id: foundAdmin.id,
+      name: foundAdmin.name,
+      email: foundAdmin.email,
     });
 
     return token;
