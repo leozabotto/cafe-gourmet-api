@@ -38,7 +38,7 @@ export default class OrderRepository {
   async create(params: IRequestCreateOrder): Promise<Order> {
     const order = await prisma.order.create({
       data: {
-        status: 'Aguardando Confirmação',
+        status: 'Fila',
         total: params.total,
         addressId: params.addressId,
         customerId: params.customerId,
